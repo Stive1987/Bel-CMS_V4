@@ -1,0 +1,127 @@
+/*********** INDEX *************/
+#belcms_user_content_ul {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+#belcms_user_content_ul ul {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#belcms_user_content_ul ul li {
+    display: block;
+    height: 65px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    position: relative;
+    transition: all linear 400ms;
+}
+#belcms_user_content_ul ul li:first-child {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+#belcms_user_content_ul ul li img {
+    display: block;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin: 8px;
+    border-radius: 8px;
+}
+#belcms_user_content_ul ul li span {
+    display: block;
+    float: left;
+    line-height: 65px;
+    margin-left: 15px;
+    font-weight: bold;
+}
+#belcms_user_content_ul ul li a {
+    display: block;
+    padding: 0 25px;
+    height: 65px;
+    line-height: 65px;
+    position: relative;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    font-size: .9em;
+    transition: all .2s ease-in-out;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+    text-decoration: none;
+}
+#belcms_user_content_ul ul li div {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 15px;
+    top: 8px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+#belcms_user_content_ul ul li div i,
+#belcms_user_content_ul ul li div svg {
+    display: block;
+    margin: auto;
+    margin-top: auto;
+    top: 8px;
+    font-size: 20px;
+    margin-top: 15px;
+}
+#belcms_user_content_ul ul li:last-child {
+    background-color: rgba(229, 20, 20, 0.65);
+    color: rgba(242, 242, 242, 0.9);
+}
+#belcms_user_content_ul ul li:last-child > div {
+    background-color: black;
+}
+.section_user_profil_form_row {
+    position: relative;
+    margin-bottom: 15px;
+}
+.section_user_profil_form_row > i,
+.section_user_profil_form_row > svg {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    font-size: 16px;
+}
+div.section_user_profil_form_row > input {
+    border: 1px solid #eee;
+    background: #f9f9f9;
+    box-shadow: 0px 10px 14px 0px rgba(12, 0, 46, 0);
+    height: 56px;
+    width: 100%;
+    padding: 17px 20px 17px 50px;
+    border-radius: 4px;
+    color: #222;
+    font-size: 12px;
+    -webkit-appearance: none;
+    outline: none;
+    overflow: hidden;
+    font-family: var(--main-font);
+    font-weight: 500;
+}
+#section_user_profil_avatar {
+display: block;
+  width: 100%;
+  height: 120px;
+  background-image: url(/assets/img/bg_user_img.png);
+  background-size: cover;
+  background-attachment: scroll;
+  background-position: center;
+  background-repeat: repeat;
+  background-origin: content-box;
+  background-color: rgba(41, 41, 41, .65);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+#section_user_profil_avatar_change {
+    display: block;
+    float: left;
+    line-height: 120px;
+    margin: 30px 20px;
+}
