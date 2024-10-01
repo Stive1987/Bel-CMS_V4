@@ -5,7 +5,7 @@
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license MIT License
- * @copyright 2015-2024 Bel-CMS
+ * @copyright 2015-2025 Bel-CMS
  * @author as Stive - stive@determe.be
 */
 

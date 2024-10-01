@@ -9,17 +9,18 @@
  * @author as Stive - stive@determe.be
 */
 
+use BelCMS\Core\User;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-
 ?>
 <nav id="belcms_user_content_ul">
     <ul>
         <li>
-            <img src="/assets/img/default_avatar.jpg" alt="default avatar">
-            <span>Bienvenue adminisrtrateur</span>
+            <img src="<?=$_SESSION['USER']->profils->avatar;?>" alt="default avatar">
+            <span>Bienvenue <i style="color:<?=$_SESSION['USER']->user->color;?>"><?=$_SESSION['USER']->user->username;?></i></span>
         </li>
         <li>
             <a href="User">Accueil</a>
@@ -34,7 +35,7 @@ endif;
             <div><i class="fa-solid fa-retweet"></i></div>
         </li>
         <li>
-            <a href="User/sessions">Historique des sessions</a>
+            <a href="User/historical">Historique des mouvements</a>
             <div><i class="fa-solid fa-users-gear"></i></div>
         </li>
         <li>

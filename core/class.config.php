@@ -86,4 +86,27 @@ final class Config
 		unset($sql);
 		return $return;
 	}
+
+	public static function getGroupsForID ($id = null)
+	{
+		if ($id == 0) {
+			return (object) array(
+				'name'     => constant('VISITORS'),
+				'id_group' => 0,
+				'image'    => '',
+				'color'    => ''
+			);
+		}
+		$id = (int) $id;
+		$return = constant('UNKNOWN');
+		$sql = New BDD;
+		$sql->where(array('name' => 'id_group', 'value' => $id));
+		$sql->table('TABLE_GROUPS');
+		$sql->fields(array('name', 'id_group', 'color', 'image'));
+		$sql->queryOne();
+		if (!empty($sql->data)) {
+			$return = $sql->data;
+		}
+		return $return;
+	}
 }

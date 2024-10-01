@@ -125,3 +125,119 @@ display: block;
     line-height: 120px;
     margin: 30px 20px;
 }
+#section_user_profil_avatar {
+	display: block;
+	width: 100%;
+	height: 120px;
+	background-image: url(/assets/img/bg_user_img.png);
+	background-size: cover;
+	background-attachment: scroll;
+	background-position: center;
+	background-repeat: repeat;
+	background-origin: content-box;
+	background-color: rgba(41, 41, 41, .65);
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+#section_user_profil_avatar_change {
+	display: block;
+	float: left;
+	line-height: 120px;
+	margin: 30px 20px;
+}
+#section_user_profil_avatar_change img {
+	display: block;
+	width: 60px;
+	height: 60px;
+	line-height: 120px;
+	border-radius: 8px;
+}
+#section_user_profil_avatar > a {
+	display: block;
+	float: left;
+	background-color: rgba(41, 41, 41, .85);
+	color: #f9f9f9;
+	height: 40px;
+	margin: 40px 0;
+	padding: 10px;
+	border-radius: 8px;
+}
+/* Avatar */
+.section_user_profil_avatar_list {
+	display: inline-block;
+	margin: 15px;
+	position: relative;
+	border-radius: 8px;
+}
+.section_user_profil_avatar_list img {
+	width: 100px;
+	height: 100px;
+	border-radius: 8px;
+}
+.section_user_profil_avatar_list_select {
+	background-color: rgba(0, 0, 0, 0.2);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transition: all 400ms linear;
+	cursor: pointer;
+	border-radius: 8px;
+	text-align: center;
+}
+.section_user_profil_avatar_list_select:hover {
+	background-color: rgba(0, 0, 0, 0);
+}
+.section_user_profil_avatar_list_select a {
+	opacity: 0;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: rgba(242, 242, 242, 0.9);
+	display: block;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	border-radius: 0 0 8px 8px;
+	line-height: 22px;
+	font-size: 14px;
+	transition: all 500ms linear;
+}
+.section_user_profil_avatar_list_select:hover a {
+	opacity: 1;
+}
+.avatar_del {
+	background-color: rgba(0, 0, 0, .85);
+	color: red;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	border-radius: 8px 8px 0 0;
+	transition: all 500ms linear;
+	line-height: 22px;
+	font-size: 14px;
+	text-align: center;
+	opacity: 0;
+}
+.section_user_profil_avatar_list:hover .avatar_del {
+	opacity: 1;
+	z-index: 99;
+}
+#uploads_logo_avatar {
+	background-size: cover;
+	background-attachment: scroll;
+	background-position: center;
+	background-repeat: repeat;
+	background-origin: content-box;
+	width: 150px;
+	height: 100px;
+	cursor: pointer;
+}
+#inputFile {
+	display: block;
+	position: absolute;
+	width: 150px;
+	height: 100px;
+	opacity: 0;
+	cursor: pointer;
+}

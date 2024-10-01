@@ -13,6 +13,54 @@ if (typeof jQuery === 'undefined') {
         field.val(randString(field));
     });
 
+    $('.user_add_avatar').click(function(event) {
+        event.preventDefault();
+        var url = $(this).attr('href');
+		$('body').append('<div class="danger" id="alrt_bel_cms">Chargement...</div>');
+        $.ajax({
+            url: url,
+            dataType: 'html',
+			type: 'GET',
+            success : function(data) {
+				console.log(data);
+				$('#alrt_bel_cms').addClass('success').empty().append('Avatar mise en place');
+			},
+			complete: function() {
+				bel_cms_alert_box_end(3250);
+				setTimeout(function() {
+					location.reload(true);
+				}, 3250);
+			},
+			beforeSend:function() {
+				$('#alrt_bel_cms').animate({ top: '0px' }, 300);
+			},
+        });
+    });
+	
+    $('.user_del_avatar').click(function(event) {
+        event.preventDefault();
+        var url = $(this).attr('href');
+		$('body').append('<div class="danger" id="alrt_bel_cms">Chargement...</div>');
+        $.ajax({
+            url: url,
+            dataType: 'html',
+			type: 'GET',
+            success : function(data) {
+				console.log(data);
+				$('#alrt_bel_cms').addClass('success').empty().append('Image effacé');
+			},
+			complete: function() {
+				bel_cms_alert_box_end(3250);
+				setTimeout(function() {
+					//location.reload(true);
+				}, 3250);
+			},
+			beforeSend:function() {
+				$('#alrt_bel_cms').animate({ top: '0px' }, 300);
+			},
+        });
+    });
+
 })(jQuery);
 
 function randString(id) {

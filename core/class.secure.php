@@ -47,14 +47,10 @@ final class Secure
 	{
 		return is_string($data) ? $data : false;
 	}
-	public static function validateDate($date, $format = 'Y-m-d H:i:s')
+	public static function validateDate($date, $format)
 	{
 		$d = DateTime::createFromFormat($format, $date);
 		return $d && $d->format($format) == $date;
-	}
-	public static function isDate($data = false)
-	{
-		return Secure::validateDate($data) ? $data : false;
 	}
 }
 ?>

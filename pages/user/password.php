@@ -24,19 +24,22 @@ endif;
                 </div>
                 <div class="col-8">
                     <form action="user/sendsecurity" method="post">
-                        <div id="section_user_profil">
-                            <h2>Modifier le mot de passe</h2>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
-                                <input class="form-control" placeholder="Ancien mot de passe" autocomplete="off" type="password" required="required" name="password_old">
-                            </div>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text"> <i class="fa-solid fa-key"></i></span>
-                                <input type="text" class="form-control" rel="gp" placeholder="nouveau mot de passe" data-size="8" data-character-set="a-z,A-Z,0-9,#" type="password" required="required" name="password_new">
-                            </div>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="getNewPass btn btn-warning">Générer</a>
-                                <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    <div class="card">
+                        <div class="card-header">Modifier le mot de passe</div>
+                        <div class="card-body">
+                            <div id="section_user_profil">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                    <input class="form-control" placeholder="Ancien mot de passe" autocomplete="off" type="password" required="required" name="password_old">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"> <i class="fa-solid fa-key"></i></span>
+                                    <input type="text" class="form-control" rel="gp" placeholder="nouveau mot de passe" data-size="8" data-character-set="a-z,A-Z,0-9,#" type="password" required="required" name="password_new">
+                                </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a class="getNewPass btn btn-warning">Générer</a>
+                                    <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                                </div>
                             </div>
                         </div>
                     </form>

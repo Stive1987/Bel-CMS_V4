@@ -13,6 +13,7 @@ namespace Belcms\Pages\Models;
 
 use BelCMS\Core\eMail;
 use BelCMS\Core\encrypt;
+use BelCMS\Core\GetHost;
 use BelCMS\Core\User as CoreUser;
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
@@ -206,6 +207,7 @@ final class User
             true,
             true
         );
+        self::insertHistorical('Login');
     }
     #########################################
     # Enregistre un nouveau mot de passe
@@ -234,6 +236,7 @@ final class User
             setcookie('BELCMS_NAME', $_SESSION['USER']->user->username, time()+60*60*24*30*3, '/');
             setcookie('BELCMS_PASS', $insert['password'], time()+60*60*24*30*3, '/');
             $return = array('type' => 'success', 'msg' => constant('SEND_PASS_IS_OK'), 'title' => constant('PASSWORD'));
+            self::insertHistorical('Mot de passe changé');
             return $return;
         } else {
             $return = array('type' => 'error', 'msg' => constant('OLD_PASS_FALSE'), 'title' => constant('PASSWORD'));
@@ -254,6 +257,7 @@ final class User
             $return['type']  = 'success';
             $return['title'] = 'Social';
             $_SESSION['USER'] = CoreUser::getInfosUserAll($_SESSION['USER']->user->hash_key);
+            self::insertHistorical('Lien social changé');
         } else {
             $return['title'] = 'Social';
             $return['msg']   = 'Vos informations n\'ont pas été sauvegardées ou partiellement';
@@ -261,5 +265,191 @@ final class User
         }
 
         return $return;
+    }
+
+    #########################################
+    # Enregistre les parametres du compte 
+    #########################################
+    public function sendAccount ($data, $profils)
+    {
+        if (!empty($data)) {
+            if (Common::hash_key($_SESSION['USER']->user->hash_key)) {
+                $sql = New BDD();
+                $sql->table('TABLE_USERS');
+                $sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
+                $sql->queryOne();
+                $dataUser = $sql->data;
+                if (empty($sql->data)) {
+                    $return = array('type' => 'warning', 'msg' => 'Erreur de données utilisateur', 'title' => 'Données');
+                    return $return;
+                } else {
+                    if ($dataUser->hash_key != $_SESSION['USER']->user->hash_key) {
+                        $return = array('type' => 'error', 'msg' => 'La hash key ne vous appartient pas', 'title' => 'Hash Key');
+                        return $return;
+                    } else {
+                        if ($data['username'] != $dataUser->username) {
+                            $sql = New BDD();
+                            $sql->table('TABLE_USERS');
+                            $sql->where(array('name' => 'username', 'value' => $data['username']));
+                            $sql->count();
+                            if ($sql->data == 1) {
+                                $return = array('type' => 'error', 'msg' => 'Ce nom d\'utilisateur est déjà utilisé', 'title' => 'Pseudo');
+                                return $return;	
+                            } else {
+                                $dataInsert['username'] = $data['username'];
+                            }
+                        }
+
+                        if ($data['mail'] != $dataUser->mail) {
+                            $sql = New BDD();
+                            $sql->table('TABLE_USERS');
+                            $sql->where(array('name' => 'mail', 'value' => $data['mail']));
+                            $sql->count();
+                            if ($sql->data == 1) {
+                                $return = array('type' => 'error', 'msg' => 'Cette email priver est déjà utilisé', 'title' => 'Email');
+                                return $return;
+                            } else {
+                                $dataInsert['mail'] = $data['mail'];
+                            }
+                        }
+
+                        if (!empty($dataInsert)) {
+                            $sql = New BDD();
+                            $sql->table('TABLE_USERS');
+                            $sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
+                            $sql->update($dataInsert);
+                        }
+
+                        $sql = New BDD();
+                        $sql->table('TABLE_USERS_PROFILS');
+                        $sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
+                        $sql->update($profils);
+
+                        $return = array('type' => 'success', 'msg' => 'Tout les paramètre, on été enregistré', 'title' => 'Profil');
+                        self::insertHistorical('Paramètre principal changé');
+                        $_SESSION['USER'] = CoreUser::getInfosUserAll($_SESSION['USER']->user->hash_key);
+                        return $return;
+                    }
+                }
+            } else {
+                $return = array('type' => 'error', 'msg' => 'Erreur de Key', 'title' => 'Profil');
+                return $return;
+            }
+        } else {
+            $return = array('type' => 'error', 'msg' => 'Aucune données', 'title' => 'Profil');
+            return $return;
+        }
+    }
+
+    #########################################
+    # Enregistre le nouveau avatar (upload)
+    #########################################
+    public function sendNewAvatar ()
+    {
+        if (!empty($_FILES['avatar'])) {
+            $dir = 'uploads/users/'.$_SESSION['USER']->user->hash_key.'/';
+            $extensions = array('.png', '.gif', '.jpg', '.jpeg');
+            $extension = strrchr($_FILES['avatar']['name'], '.');
+            if (!in_array($extension, $extensions)) {
+                $return['msg']  = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg';
+                $return['type'] = 'error';
+                $return['title']  = 'Extention';
+             } else if (move_uploaded_file($_FILES['avatar']['tmp_name'], $dir.$_FILES['avatar']['name'])) {
+                $return['msg']  = 'Upload effectué avec succès';
+                $return['type'] = 'success';
+                $return['title']  = 'Avatar';
+                $data = array('avatar' => $dir.$_FILES['avatar']['name'], 'select' => 'select');
+                self::avatarSubmit($data);
+                self::insertHistorical('Nouvelle avatar uploadé');
+            } else {
+                $return['msg']  = 'Echec de l\'upload !';
+                $return['type'] = 'warning';
+                $return['title']  = 'Erreur inconnu';
+            }
+        } else {
+            $return['msg']  = 'Aucun upload d\'image en cours...';
+            $return['type'] = 'error';
+            $return['title']  = 'Aucune image';
+        }
+        return $return;
+    }
+    #########################################
+    # Selectionne l'avatar ou le supprime
+    #########################################
+    public function avatarSubmit ($data)
+    {
+        $return = null;
+        if ($data['select'] == 'select') {
+            if ($data['avatar']) {
+                $ext = new \SplFileInfo($data['avatar']);
+                $extensions = array('png', 'gif', 'jpg', 'jpeg');
+                if (in_array($ext->getExtension(), $extensions)) {
+                    $sql = New BDD();
+                    $sql->table('TABLE_USERS_PROFILS');
+                    $sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
+                    $sql->update(array('avatar'=> $data['avatar']));
+                    $return['msg']  = 'Avatar changer avec succès';
+                    $return['type'] = 'success';
+                    $return['title']  = 'Avatar';
+                    /* update $_SESSION */
+                    $_SESSION['USER'] = CoreUser::getInfosUserAll($_SESSION['USER']->user->hash_key);
+                    return $return;
+                } else {
+                    $return['msg']    = 'mavaise extention de l\'avatar';
+                    $return['type']   = 'warning';
+                    $return['title']  = 'Avatar';
+                }
+            } else {
+                $return['msg']       = 'Aucune avatar';
+                $return['type']      = 'warning';
+                $return['title']  = 'Avatar';
+            }
+        } else if ($data['select'] == 'delete') {
+            $sql = New BDD();
+            $sql->table('TABLE_USERS_PROFILS');
+            $sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
+            $sql->update(array('avatar'=> constant('DEFAULT_AVATAR')));
+            $link = $data['avatar'];
+            // @ = fix erreur Windows localhost
+            @unlink($link);
+            unset($return);
+            $return['msg']    = $link;
+            $return['type']   = 'success';
+            $return['title']  = 'Avatar';
+        }
+
+        return $return;
+    }
+    public function insertHistorical($data)
+    {
+        $insert['author']  = $_SESSION['USER']->user->hash_key;
+        $insert['message'] = Common::VarSecure($data, null);
+        $insert['ip']      = Common::GetIp();
+        $sql = new BDD;
+        $sql->table('TABLE_USERS_NOTIFICATION');
+        $sql->insert($insert);
+    }
+    public function getHistorical() : array
+    {
+        $sql = new BDD;
+        $sql->table('TABLE_USERS_NOTIFICATION');
+        $sql->where(array('name'=>'author','value'=>$_SESSION['USER']->user->hash_key));
+        $sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+        $sql->queryAll();
+        $return = $sql->data;
+        return $return;
+    }
+    public function ChangeGroup ($id)
+    {
+        $up['user_group'] = $id;
+        $update = New BDD;
+        $update->table('TABLE_USERS_GROUPS');
+        $update->update($up);
+        $return['msg']    = constant('MODIFY_PROFILS_SUCCESS');
+        $return['type']   = 'success';
+        /* Mise à jour du profil */
+        $_SESSION['USER'] = CoreUser::getInfosUserAll($_SESSION['USER']->user->hash_key);
+        self::insertHistorical('Changement de groupe effectué avec succès');
+        return $return; 
     }
 }
