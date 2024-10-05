@@ -452,4 +452,15 @@ final class User
         self::insertHistorical('Changement de groupe effectué avec succès');
         return $return; 
     }
+    public function saveprofils ($data) : array
+    {
+        $sql = New BDD();
+        $sql->table('TABLE_USERS_PROFILS');
+        $sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
+        $sql->update($data);
+        $return = array('type' => 'success', 'msg' => 'Tout les paramètre, on été enregistré', 'title' => 'Profil');
+        self::insertHistorical('Paramètre du profils');
+        $_SESSION['USER'] = CoreUser::getInfosUserAll($_SESSION['USER']->user->hash_key);
+        return $return;
+    }
 }

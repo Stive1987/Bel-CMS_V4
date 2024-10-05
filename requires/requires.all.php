@@ -28,6 +28,7 @@ $files = array (
 	ROOT.DS.'core'.DS.'class.encrypt.php',
 	ROOT.DS.'core'.DS.'class.mail.php',
 	ROOT.DS.'core'.DS.'class.secure.php',
+	ROOT.DS.'core'.DS.'class.ban.php',
 	ROOT.DS.'core'.DS.'class.gethost.php',
 	ROOT.DS.'core'.DS.'class.captcha.php',
 	ROOT.DS.'core'.DS.'class.config.php',
@@ -36,6 +37,7 @@ $files = array (
 	ROOT.DS.'core'.DS.'class.pages.php',
 	ROOT.DS.'core'.DS.'class.notification.php',
 	ROOT.DS.'core'.DS.'class.templates.php',
+	ROOT.DS.'managements'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.belcms.php',
 );
 foreach ($files as $include) {

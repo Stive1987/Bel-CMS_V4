@@ -27,6 +27,10 @@ endif;
             <div><i class="fa-solid fa-house-user"></i></div>
         </li>
         <li>
+            <a href="User/Complement">Complément</a>
+            <div><i class="fa-solid fa-house-user"></i></div>
+        </li>
+        <li>
             <a href="User/Security">Mot de passe</a>
             <div><i class="fa-solid fa-key"></i></div>
         </li>

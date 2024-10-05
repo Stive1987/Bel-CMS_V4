@@ -17,6 +17,8 @@ if(!isset($_SESSION)) {
 }
 use BelCMS\Core\BelCMS;
 use BelCMS\Core\Dispatcher;
+use BelCMS\Core\Ban;
+use Belcms\Management\Managements;
 
 # TimeZone et charset
 #######################################################
@@ -53,15 +55,17 @@ if (is_file(ROOT.DS.'INSTALL'.DS.'index.php')) {
 # Fichier requis
 #######################################################
 require_once ROOT.DS.'requires'.DS.'requires.all.php';
-#######################################################
-# Initialise le C.M.S
-#######################################################
+#########################################
+# Bannissement
+#########################################
+new Ban();
 #########################################
 # Initialise le C.M.S
 #########################################
 if (Dispatcher::isManagement() === true) {
 	header('Content-Type: text/html');
 	require_once constant('DIR_ADMIN').'index.php';
+	new Managements ();
 } else {
 	$belcms = new BelCMS;
 	if (isset($_GET['echo'])) {

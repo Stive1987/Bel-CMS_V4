@@ -20,41 +20,39 @@ endif;
     <section class="belcms_user_content">
         <div class="container text-center">
             <div class="row">
-                <div class="col-4">
+                <div class="col-12 col-md-6 col-lg-4">
                     <?php include 'menu.php'; ?>
                 </div>
-                <div class="col-8">
-                    <form action="user/submithistorical" method="post" class="belcms_section_user_main_form">
-                        <div class="card">
-                            <div class="card-header">Historique des mouvements sur le compte</div>
-                            <div class="card-body">
-                                <table class="table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>IP</th>
-                                            <th>Date</th>
-                                            <th>Message</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        foreach ($data as $v):
-                                        ?>
-                                        <tr>
-                                            <td><?=$v->id;?></td>
-                                            <td><?=$v->ip;?></td>
-                                            <td><?=Common::TransformDate($v->date_notif, 'MEDIUM', 'MEDIUM');?></td>
-                                            <td><?=$v->message;?></td>
-                                        </tr>
-                                        <?php
-                                        endforeach;
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                <div class="col-12 col-md-6 col-lg-8">
+                    <div class="card">
+                        <div class="card-header">Historique des mouvements sur le compte</div>
+                        <div class="card-body">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>IP</th>
+                                        <th>Date</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($data as $v):
+                                    ?>
+                                    <tr>
+                                        <td><?=$v->id;?></td>
+                                        <td><?=$v->ip;?></td>
+                                        <td><?=Common::TransformDate($v->date_notif, 'MEDIUM', 'MEDIUM');?></td>
+                                        <td><?=$v->message;?></td>
+                                    </tr>
+                                    <?php
+                                    endforeach;
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@
 
 namespace Belcms\Pages\Controller;
 
+use BelCMS\Core\Ban;
 use BelCMS\Core\Captcha;
 use BelCMS\Core\Pages;
 use BelCMS\Core\Secure;
@@ -71,6 +72,24 @@ class User extends Pages
         $return   = CoreUser::login($username, $password);
         $this->models->insertHistorical($return['msg']);
         $this->message ($return['type'], $return['msg'],'login', false);
+        $this->redirect('User', 3);
+    }
+    ################################################
+    # complement d'information
+    ################################################
+    public function complement ()
+    {
+        $this->render('complement');
+    }
+    public function saveprofils ()
+    {
+        $data['public_mail'] = Secure::isMail($_POST['public_mail']);
+        $data['websites']    = Secure::isUrl($_POST['websites']);
+        $data['gravatar']    = isset($_POST['gravatar']) ? (int) $_POST['gravatar'] : 0;
+        $data['profils']     = isset($_POST['profils']) ? (int) $_POST['profils'] : 0;
+
+        $return = $this->models->saveprofils ($data);
+        $this->message ($return['type'], $return['msg'],'Profil', false);
         $this->redirect('User', 3);
     }
     ################################################
@@ -321,8 +340,7 @@ class User extends Pages
 				$this->redirect('User/Groups', 2);
 				$this->message($return['type'], $return['msg'], constant('INFO'), false);
 			} else {
-                /*
-				_Ban::addBan(
+				Ban::addBan(
 					null,
 					Common::GetIp(),
 					$_SESSION['USER']->user->mail,
@@ -330,10 +348,8 @@ class User extends Pages
 					'P99Y',
 					constant('ERROR_CHANGE_GROUP')
 				);
-				new Interaction('error', 'GROUPS', constant('INTERACTION_ERROR_GROUP'));
-				$this->error = true;
-				$this->errorInfos = array('error', constant('ERROR_CHANGE_GROUP'), constant('ALERT'), true);
-                */
+                $this->models->insertHistorical(constant('INTERACTION_ERROR_GROUP'));
+				$this->message('error', constant('ERROR_CHANGE_GROUP'), constant('ALERT'), true);
 			}
 		} else {
 			$this->redirect('User/login&echo', 3);

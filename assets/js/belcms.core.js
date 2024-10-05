@@ -28,10 +28,6 @@ if (typeof jQuery === 'undefined') {
 		bel_cms_alert_box($(this), 'GET');
 	});
 
-	if (window.sidebar){
-		//document.onmousedown = disableselect
-		document.onclick = reEnable
-	}
 	if ($('body').hasClass("DataTableBelCMS")) {
 		$('.DataTableBelCMS').DataTable({
 	    "language":
@@ -86,8 +82,6 @@ if (typeof jQuery === 'undefined') {
 	}
 
 	bel_cms_private_message();
-
-	const lightbox = GLightbox({});
 
     console.log("Chargement BEL-CMS script Ok");
 
